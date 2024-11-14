@@ -14,11 +14,6 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 logging.basicConfig(level=logging.ERROR, filemode='a', filename='./calc_kkal.log', encoding='utf-8',
                     format='%(asctime)s | %(levelname)s | %(message)s')
 
-connection = sqlite3.connect('not_telegram.db')
-cursor = connection.cursor()
-all_products = get_all_products()
-connection.close()
-
 start_menu_kb = ReplyKeyboardMarkup(
     keyboard=[
         [
@@ -65,6 +60,7 @@ async def main_menu(message):
 
 @dp.message_handler(text='Купить')
 async def get_buying_list(message):
+    all_products = get_all_products()
     for i in all_products:
         id, title, description, price = i
         await message.answer(f'Название: {title} | Описание: {description} | Цена: {price}')
